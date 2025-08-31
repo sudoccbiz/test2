@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF417 Barcode Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/bwip-js/dist/bwip-js.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+      color: white;
+      text-align: center;
+      padding: 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #ffcc00;
+      text-shadow: 0 0 12px #ffcc00aa;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(6px);
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      border: 1px solid #444;
+      background: #222;
+      color: white;
+      font-size: 1em;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #ffcc00;
+      box-shadow: 0 0 10px #ffcc00aa;
+    }
+
+    button {
+      background: linear-gradient(135deg, #ffcc00, #ffaa00);
+      border: none;
+      border-radius: 12px;
+      padding: 12px 24px;
+      margin: 10px;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255, 204, 0, 0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(255, 204, 0, 0.6);
+    }
+
+    canvas {
+      margin-top: 20px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>PDF417 Barcode Generator</h1>
+  <div class="card">
+    <input type="text" id="barcode-text" placeholder="Enter text to encode">
+    <br>
+    <button onclick="generateBarcode()">Generate</button>
+    <button onclick="downloadBarcode()">Download</button>
+    <canvas id="barcode"></canvas>
+  </div>
+
+  <script>
+    function generateBarcode() {
+      let text = document.getElementById('barcode-text').value;
+      if (!text) {
+        alert('Please enter some text.');
+        return;
+      }
+      try {
+        bwipjs.toCanvas('barcode', {
+          bcid: 'pdf417',
+          text: text,
+          scale: 3,
+          height: 6,
+          includetext: true,
+          textxalign: 'center',
+        });
+      } catch (e) {
+        alert('Error generating barcode: ' + e);
+      }
+    }
+
+    function downloadBarcode() {
+      let canvas = document.getElementById('barcode');
+      let link = document.createElement('a');
+      link.download = 'barcode.png';
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
+
+
